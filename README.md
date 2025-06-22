@@ -25,7 +25,16 @@ A solução é composta pelos seguintes componentes:
 
 Para que o projeto funcione corretamente, o cliente deve receber os arquivos organizados na seguinte estrutura:
 
-seu_projeto/├── docker-compose.yml├── simulador_py/│   ├── Dockerfile│   └── simulador.py└── subscriber_py/├── Dockerfile└── subscriber.py
+seu_projeto/
+├── docker-compose.yml
+├── simulador_py/
+   │   
+   ├── Dockerfile│   
+   └── simulador.py
+│     
+└── subscriber_py/
+   ├── Dockerfile
+   └── subscriber.py
 ---
 
 ## Guia de Instalação e Execução
