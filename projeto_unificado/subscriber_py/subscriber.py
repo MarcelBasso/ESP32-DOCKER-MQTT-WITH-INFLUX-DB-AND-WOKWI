@@ -14,7 +14,7 @@ CLIENT_ID = f"python_subscriber_{random.randint(0, 1000)}"
 
 INFLUXDB_URL = "http://influxdb:8086"
 # !!! ATENÇÃO: SUBSTITUA COM O SEU TOKEN REAL DO INFLUXDB !!!
-INFLUXDB_TOKEN = "DICqtzzk5r14Ge5Hf8gL8Hh5XYptz2nqiiOwShigOy7SM5wq9LBzK6eyxGrt7xKw2zTr09VvKllKk19Eh9q9rQ==" 
+INFLUXDB_TOKEN = "SUBSTITUA PELO SEU TOKEN" 
 INFLUXDB_ORG = "minha_org"
 INFLUXDB_BUCKET = "iot_bucket"
 
