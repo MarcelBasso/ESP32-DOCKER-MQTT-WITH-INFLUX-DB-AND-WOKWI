@@ -25,19 +25,7 @@ A solução é composta pelos seguintes componentes:
 
 Para que o projeto funcione corretamente, o cliente deve receber os arquivos organizados na seguinte estrutura:
 
-
-
-seu_projeto/
-│
-├── docker-compose.yml
-│
-├── simulador_py/
-│ ├── Dockerfile
-│ └── simulador.py
-│
-└── subscriber_py/
-├── Dockerfile
-└── subscriber.py
+seu_projeto/├── docker-compose.yml├── simulador_py/│   ├── Dockerfile│   └── simulador.py└── subscriber_py/├── Dockerfile└── subscriber.py
 ---
 
 ## Guia de Instalação e Execução
@@ -64,12 +52,11 @@ O Docker é a tecnologia que permite que todos os serviços (banco de dados, das
 Com o Docker em execução, agora vamos iniciar a nossa aplicação.
 
 1.  **Descompacte** e coloque a pasta do projeto (que contém o `docker-compose.yml`) em um local de fácil acesso (ex: `C:\Users\SeuUsuario\Desktop\projeto_ultrafreezer`).
-2.  **Abra um terminal** (PowerShell ou Prompt de Comando no Windows) nessa pasta usando cd C:\Users\SeuUsuario\Desktop\projeto_ultrafreezer.
-3.  Execute o seguinte comando no terminal  para construir e iniciar todos os serviços:
-
-
+2.  **Abra um terminal** (PowerShell ou Prompt de Comando no Windows) nessa pasta usando `cd C:\Users\SeuUsuario\Desktop\projeto_ultrafreezer`.
+3.  Execute o seguinte comando no terminal para construir e iniciar todos os serviços:
+    ```bash
     docker-compose up -d --build
-
+    ```
     * **O que este comando faz?** Ele lê o `docker-compose.yml`, baixa as imagens do InfluxDB e Grafana, constrói as imagens para os nossos scripts Python e inicia todos os contêineres em segundo plano.
     * Aguarde alguns minutos. O primeiro download pode demorar um pouco.
 
@@ -79,7 +66,6 @@ Esta etapa só precisa ser realizada uma única vez.
 
 1.  **Acesse a Interface Web do InfluxDB:**
     * Abra seu navegador e vá para [http://localhost:8086](http://localhost:8086).
-
 2.  **Execute o Setup Inicial:**
     * Clique em **"Get Started"**.
     * Preencha o formulário:
@@ -88,19 +74,17 @@ Esta etapa só precisa ser realizada uma única vez.
         * **Initial Organization Name**: `minha_org` (Este nome é **obrigatório**).
         * **Initial Bucket Name**: `iot_bucket` (Este nome é **obrigatório**).
     * Clique em **"Continue"**.
-
 3.  **Obtenha e Configure o Token:**
     * O InfluxDB exibirá seu **API Token**. **Copie este token** imediatamente.
     * Abra o arquivo `subscriber.py` (dentro da pasta `subscriber_py`) com um editor de texto.
     * Localize a linha: `INFLUXDB_TOKEN = "..."`
     * Substitua o conteúdo entre as aspas pelo token que você acabou de copiar.
     * Salve o arquivo `subscriber.py`.
-
 4.  **Reinicie o Serviço:**
     * Volte ao seu terminal e execute o comando abaixo para que o `subscriber` use o novo token:
-    
+        ```bash
         docker-compose restart subscriber
-     
+        ```
 
 ### Passo 4: Configurar o Grafana
 
@@ -116,7 +100,6 @@ Esta etapa só precisa ser realizada uma única vez.
         * **Default Bucket**: `iot_bucket`
     * Clique em **"Save & test"**. Uma mensagem de sucesso deve aparecer.
 
-
 4.  **Criar os Dashboards:**
     * No menu lateral, clique no ícone de quatro quadrados (**Dashboards**).
     * Na página de Dashboards, clique em **"New"** e depois em **"New Dashboard"**.
@@ -125,7 +108,8 @@ Esta etapa só precisa ser realizada uma única vez.
     <details>
     <summary><strong>Painel 1: Temperatura do Freezer</strong></summary>
 
-    1.  Cole a seguinte consulta **Flux** no editor:
+    1.  Na tela de criação, selecione **"InfluxDB"** como a fonte de dados (Data Source).
+    2.  Cole a seguinte consulta **Flux** no editor:
         ```flux
         from(bucket: "iot_bucket")
           |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
@@ -133,16 +117,17 @@ Esta etapa só precisa ser realizada uma única vez.
           |> filter(fn: (r) => r["_field"] == "temperatura_freezer")
           |> yield(name: "Temperatura Freezer")
         ```
-    2.  No painel direito, em "Panel options", defina o **Title** como `Temperatura do Freezer`.
-    3.  Em "Standard options", defina a **Unit** como `Temperature > Celsius (°C)`.
-    4.  Clique em **"Apply"** para adicionar o painel.
+    3.  No painel direito, em "Panel options", defina o **Title** como `Temperatura do Freezer`.
+    4.  Em "Standard options", defina a **Unit** como `Temperature > Celsius (°C)`.
+    5.  Clique em **"Apply"** para adicionar o painel.
     </details>
 
     <details>
     <summary><strong>Painel 2: Temperatura Ambiente</strong></summary>
 
     1.  Clique em "+ Add visualization" novamente.
-    2.  Cole a seguinte consulta **Flux** no editor:
+    2.  Selecione **"InfluxDB"** como a fonte de dados.
+    3.  Cole a seguinte consulta **Flux** no editor:
         ```flux
         from(bucket: "iot_bucket")
           |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
@@ -150,15 +135,16 @@ Esta etapa só precisa ser realizada uma única vez.
           |> filter(fn: (r) => r["_field"] == "temperatura_ambiente")
           |> yield(name: "Temperatura Ambiente")
         ```
-    3.  No painel direito, defina o **Title** como `Temperatura Ambiente` e a **Unit** como `Temperature > Celsius (°C)`.
-    4.  Clique em **"Apply"**.
+    4.  No painel direito, defina o **Title** como `Temperatura Ambiente` e a **Unit** como `Temperature > Celsius (°C)`.
+    5.  Clique em **"Apply"**.
     </details>
 
     <details>
     <summary><strong>Painel 3: Status da Energia</strong></summary>
 
     1.  Clique em "+ Add visualization".
-    2.  Cole a seguinte consulta **Flux**:
+    2.  Selecione **"InfluxDB"** como a fonte de dados.
+    3.  Cole a seguinte consulta **Flux**:
         ```flux
         from(bucket: "iot_bucket")
           |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
@@ -166,16 +152,15 @@ Esta etapa só precisa ser realizada uma única vez.
           |> filter(fn: (r) => r["_field"] == "status_energia")
           |> yield(name: "Status Energia")
         ```
-    3.  No painel direito, mude a **Visualization** para **"State timeline"**.
-    4.  Em **Value mappings**, configure duas regras:
+    4.  No painel direito, mude a **Visualization** para **"State timeline"**.
+    5.  Em **Value mappings**, configure duas regras:
         * **Regra 1:** `Value`: `1`, `Display text`: `Ligado`, `Color`: `green`.
         * **Regra 2:** `Value`: `0`, `Display text`: `Desligado`, `Color`: `red`.
-    5.  Defina o **Title** como `Status da Energia`.
-    6.  Clique em **"Apply"**.
+    6.  Defina o **Title** como `Status da Energia`.
+    7.  Clique em **"Apply"**.
     </details>
 
-    * Após criar os três painéis, clique no ícone de disquete no canto superior direito para **salvar o dashboard**.
-
+    * Após criar os três painéis, clique no ícone de disquete (💾) no canto superior direito para **salvar o dashboard**.
 
 ### Passo 5: Rodar o Firmware do ESP32
 
@@ -194,5 +179,3 @@ Esta etapa só precisa ser realizada uma única vez.
     2.  Aguarde o ícone do Docker na bandeja do sistema ficar estável.
     3.  Feche seu terminal e abra um novo.
     4.  Navegue até a pasta do projeto e execute o comando `docker-compose up -d --build` novamente.
-
-
