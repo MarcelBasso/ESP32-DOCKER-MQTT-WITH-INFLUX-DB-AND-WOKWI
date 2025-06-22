@@ -164,9 +164,8 @@ Esta etapa só precisa ser realizada uma única vez.
         * **Regra 1:** `Value`: `1`, `Display text`: `Ligado`, `Color`: `green`.
         * **Regra 2:** `Value`: `0`, `Display text`: `Desligado`, `Color`: `red`.
     6.  Defina o **Title** como `Status da Energia`.
-
-   *recomendo a vizualização do tipo Stat em contraste ao Time series das anteriores*
     7.  Clique em **"Apply"**.
+       
     </details>
 
     * Após criar os três painéis, clique no ícone de disquete (💾) no canto superior direito para **salvar o dashboard**.
