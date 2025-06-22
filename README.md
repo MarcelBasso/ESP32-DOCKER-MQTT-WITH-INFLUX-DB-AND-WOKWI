@@ -174,6 +174,7 @@ Esta etapa só precisa ser realizada uma única vez.
 
 1.  Acesse o [Wokwi](https://wokwi.com/) e configure o projeto com os arquivos `sketch.ino` e `diagram.json` fornecidos.
 2.  Inicie a simulação. O ESP32 começará a enviar dados que aparecerão no seu dashboard do Grafana.
+3.  Não esqueça de dar STOP no simulador.py dentro do docker para não sobrepor dados, já que o tópico é o mesmo. Você pode criar mais tópicos para novos dispositivos.
 
 ---
 
