@@ -26,16 +26,15 @@ A solução é composta pelos seguintes componentes:
 Para que o projeto funcione corretamente, o cliente deve receber os arquivos organizados na seguinte estrutura:
 
 seu_projeto/
-├── docker-compose.yml
-├── simulador_py/
-   │   
-   ├── Dockerfile│   
-   └── simulador.py
-│     
-└── subscriber_py/
-   ├── Dockerfile
-   └── subscriber.py
----
+├── docker-compose.yml          # Arquivo principal para orquestração dos containers
+├── simulador_py/               # Pasta do simulador de sensores (ESP32 simulado)
+│   ├── Dockerfile              # Imagem do container do simulador
+│   └── simulador.py            # Script responsável pela geração de dados simulados
+│
+└── subscriber_py/              # Pasta do subscriber MQTT
+    ├── Dockerfile              # Imagem do container do subscriber
+    └── subscriber.py           # Script responsável por receber e processar os dados
+
 
 ## Guia de Instalação e Execução
 
