@@ -1,39 +1,4 @@
-# Sistema de Monitoramento de Ultrafreezer com Docker e ESP32
-
-Este projeto implementa uma solução completa de Internet das Coisas (IoT) para o monitoramento em tempo real de um ultrafreezer simulado. Ele utiliza um ESP32 (simulado no Wokwi) para coletar dados de sensores, Docker para orquestrar os serviços de backend, InfluxDB como banco de dados de séries temporais e Grafana para visualização dos dados em dashboards interativos.
-
 ---
-
-## Arquitetura do Sistema
-
-A solução é composta pelos seguintes componentes:
-
-1.  **Coleta de Dados (Duas Opções):**
-    * **Hardware Real (ESP32):** Um microcontrolador ESP32, simulado no ambiente Wokwi, lê os dados de sensores de temperatura e energia e os envia via MQTT.
-    * **Simulador Python (`simulador.py`):** Um script Python que roda em um contêiner Docker e gera dados aleatórios, seguindo o mesmo formato do ESP32. É ideal para testar o backend (subscriber, InfluxDB e Grafana) sem a necessidade do hardware físico. Quando usado, sobrescreve os dados da ESP32, sendo que deve ser parado quando for usado o Wokwi.
-
-2.  **Broker MQTT:** Um broker público (`mqtt.eclipseprojects.io`) atua como intermediário, recebendo os dados do ESP32 ou do simulador e distribuindo-os para os clientes inscritos.
-
-3.  **Backend Dockerizado:** Um ambiente Docker orquestrado pelo `docker-compose.yml` executa os seguintes serviços:
-    * **Subscriber (`subscriber.py`):** Um script Python que se inscreve no tópico MQTT, recebe os dados dos sensores e os grava no banco de dados InfluxDB.
-    * **InfluxDB:** Um banco de dados de alta performance, otimizado para armazenar dados de séries temporais.
-    * **Grafana:** Uma plataforma de visualização que se conecta ao InfluxDB para criar dashboards interativos.
-
----
-
-## Estrutura dos Arquivos
-
-Para que o projeto funcione corretamente, o cliente deve receber os arquivos organizados na seguinte estrutura:
-
-seu_projeto/
-├── docker-compose.yml
-├── simulador_py/
-│   ├── Dockerfile
-│   └── simulador.py
-└── subscriber_py/
-    ├── Dockerfile
-    └── subscriber.py
-
 
 ## Guia de Instalação e Execução
 
@@ -58,8 +23,8 @@ O Docker é a tecnologia que permite que todos os serviços (banco de dados, das
 
 Com o Docker em execução, agora vamos iniciar a nossa aplicação.
 
-1.  **Descompacte** e coloque a pasta do projeto (que contém o `docker-compose.yml`) em um local de fácil acesso (ex: `C:\Users\SeuUsuario\Desktop\projeto_ultrafreezer`).
-2.  **Abra um terminal** (PowerShell ou Prompt de Comando no Windows) nessa pasta usando `cd C:\Users\SeuUsuario\Desktop\projeto_ultrafreezer`.
+1.  Descompacte e coloque a pasta do projeto (que contém o `docker-compose.yml`) em um local de fácil acesso (ex: `C:\Users\SeuUsuario\Desktop\projeto_ultrafreezer`).
+2.  Abra um terminal (PowerShell ou Prompt de Comando no Windows) nessa pasta usando `cd C:\Users\SeuUsuario\Desktop\projeto_ultrafreezer`.
 3.  Execute o seguinte comando no terminal para construir e iniciar todos os serviços:
     ```bash
     docker-compose up -d --build
@@ -165,7 +130,7 @@ Esta etapa só precisa ser realizada uma única vez.
         * **Regra 2:** `Value`: `0`, `Display text`: `Desligado`, `Color`: `red`.
     6.  Defina o **Title** como `Status da Energia`.
     7.  Clique em **"Apply"**.
-       
+        
     </details>
 
     * Após criar os três painéis, clique no ícone de disquete (💾) no canto superior direito para **salvar o dashboard**.
