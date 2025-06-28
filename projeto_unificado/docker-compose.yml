@@ -1,4 +1,4 @@
-# Versão final e corrigida do docker-compose.yml
+# Este docker-compose.yml é para o fluxo de setup manual do InfluxDB.
 services:
   influxdb:
     image: influxdb:2.7
@@ -7,16 +7,6 @@ services:
       - "8086:8086"
     volumes:
       - influxdb_data:/var/lib/influxdb2
-    # --- Configuração automática do InfluxDB ---
-    # Na primeira inicialização, ele criará tudo que precisamos.
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=SEU USUARIO
-      - DOCKER_INFLUXDB_INIT_PASSWORD=SUA SENHA
-      - DOCKER_INFLUXDB_INIT_ORG=minha_org
-      - DOCKER_INFLUXDB_INIT_BUCKET=iot_bucket
-      # Este é o mesmo token do seu script subscriber.py
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=COLOQUE SEU TOKER AQUI
     restart: unless-stopped
 
   grafana:
