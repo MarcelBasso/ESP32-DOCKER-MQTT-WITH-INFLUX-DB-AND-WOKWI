@@ -161,7 +161,7 @@ Esta etapa só precisa ser realizada uma única vez.
 
 ## Solução de Problemas (Troubleshooting)
 
-**Erro no Windows: `open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.`**
+### Erro no Windows: `open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.`
 
 * **Causa:** Este erro significa que o Docker Desktop não está em execução ou não iniciou corretamente.
 * **Solução:**
@@ -169,3 +169,22 @@ Esta etapa só precisa ser realizada uma única vez.
     2.  Aguarde o ícone do Docker na bandeja do sistema ficar estável.
     3.  Feche seu terminal e abra um novo.
     4.  Navegue até a pasta do projeto e execute o comando `docker-compose up -d --build` novamente.
+
+### Erro no Grafana: `connection refused`
+
+* **Problema:** Ao configurar a fonte de dados (Data Source) do InfluxDB no Grafana e clicar em "Save & test", aparece um erro de `connection refused` ou similar.
+* **Causa:** O contêiner do Grafana não consegue encontrar o contêiner do InfluxDB usando a URL `http://localhost:8086`. Dentro da rede do Docker, os contêineres devem se comunicar usando os nomes dos serviços definidos no arquivo `docker-compose.yml`.
+* **Solução:**
+    1.  Na página de configuração da fonte de dados do InfluxDB no Grafana, certifique-se de que o campo **URL** está configurado como `http://influxdb:8086`.
+    2.  Use `influxdb` no lugar de `localhost`.
+    3.  Clique em **"Save & test"** novamente.
+
+### Resetando o Ambiente Completamente
+
+* **Problema:** Ao recriar os contêineres, os dados antigos do InfluxDB e Grafana ainda estão lá, impedindo uma nova configuração.
+* **Causa:** O Docker mantém os dados em "volumes" que não são apagados com o comando `docker-compose down`.
+* **Solução:** Para apagar os contêineres, redes e **todos os volumes de dados**, use o seguinte comando no terminal:
+    ```bash
+    docker-compose down -v
+    ```
+    Após executar este comando, você pode subir o ambiente novamente com `docker-compose up -d --build` e começar do zero.
